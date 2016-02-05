@@ -3,7 +3,7 @@ package adjlist
 import (
 	"container/list"
 	//"fmt"
-	graph "github.com/rajala/graph"
+	graph "github.com/rmahidhar/graph"
 )
 
 type AdjList struct {
