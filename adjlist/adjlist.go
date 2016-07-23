@@ -6,11 +6,26 @@ import (
 	graph "github.com/rmahidhar/graph"
 )
 
+type vertex struct {
+    id uint32
+	name string
+	outEdges map[string]edge
+	inEdges map[string]edge
+}
+
+type edge struct {
+	src string 
+	dst string
+	property map[string]int
+}
+
 type AdjList struct {
 	numVertices uint32
 	numEdges    uint32
-	adjList     []*list.List
+	vertexmap   map[string]vertex
 }
+
+type VertexMap map[string]vertex
 
 func New() graph.Graph {
 	return new(AdjList).Init()
@@ -19,15 +34,17 @@ func New() graph.Graph {
 func (g *AdjList) Init() graph.Graph {
 	g.numVertices = 0
 	g.numEdges = 0
-	g.adjList = nil
+	v.vertextmap = make(map[string]vertex)
 	return g
 }
 
-func (g *AdjList) AddVertex(v uint32) {
+func (g *AdjList) AddVertex(name string) graph.Vertex {
+    v := Vertex{id: ++g.numVertices, name: name}
+
 
 }
 
-func (g *AdjList) AddEdge(src uint32, dst uint32, attrs *graph.Property) {
+func (g *AdjList) AddEdge(src string, dst string) {
 
 }
 

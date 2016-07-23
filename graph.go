@@ -10,21 +10,18 @@ type Vertex interface {
 	Name() string
 }
 
-type Property interface {
-	Cost() uint32
-	Latency() uint32
-}
-
 type Edge interface {
 	Src() *Vertex
 	Dst() *Vertex
-	Property() *Property
+	Property(name string) uint32
 }
 
 type Graph interface {
-	AddVertex(v uint32)
-	AddEdge(src uint32, dst uint32, attrs *Property)
-	GetNeighbors(v uint32) *list.List
+	AddVertex(name string)
+	AddEdge(src string, dst string)
+	SetEdgeProperty(src string, dst string, name string, val uint32)
+	GetInEdges(v string) map[string]Edge
+	GetOutEdges(v string) map[string]Edge
 	GetNumVertices() uint32
 	GetNumEdges() uint32
 }
