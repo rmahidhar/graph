@@ -1,17 +1,15 @@
 package priorityq
 
-import (
-	pq "github.com/rmahidhar/priorityq"
-)
+import ()
 
 type item struct {
 	value interface{}
-	cost int
-	index int
+	cost  int32
+	index int32
 }
 
 type BinaryHeap struct {
-	items []*item
-	indices map[interface{}]int
-	len int
+	items   []*item
+	indices map[interface{}]int32
+	len     int32
 }

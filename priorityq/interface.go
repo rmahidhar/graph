@@ -5,5 +5,5 @@ type Interface interface {
 	Pop() (interface{}, int)
 	Update(item interface{}, cost int)
 	Len() int
-	Comparator func(int, int) bool
+	Comparator() func(int, int) bool
 }

@@ -2,22 +2,22 @@ package adjlist
 
 import (
 	"fmt"
-	graph "github.com/rmahidhar/graph"
+	"github.com/rmahidhar/graph"
 )
 
 type vertex struct {
-    id uint32
-	name string
+	id       uint32
+	name     string
 	outEdges map[string]*edge
-	inEdges map[string]*edge
+	inEdges  map[string]*edge
 	//outEdges []*edge
 	//inEdges []*edge
 }
 
 type edge struct {
-	src string
-	dst string
-	property map[string]int
+	src      string
+	dst      string
+	property map[string]interface{}
 }
 
 type AdjList struct {
@@ -37,13 +37,13 @@ func (g *AdjList) Init() graph.Graph {
 	return g
 }
 
-func (g *AdjList) AddVertex(name string)  {
+func (g *AdjList) AddVertex(name string) {
 	g.numVertices += 1
-    v := &vertex{
-		id: g.numVertices,
-		name: name,
+	v := &vertex{
+		id:       g.numVertices,
+		name:     name,
 		outEdges: make(map[string]*edge),
-		inEdges: make(map[string]*edge),
+		inEdges:  make(map[string]*edge),
 	}
 	g.vertexmap[name] = v
 }
@@ -53,9 +53,9 @@ func (g *AdjList) AddEdge(src string, dst string) error {
 	_, dstexist := g.vertexmap[dst]
 	if srcexist && dstexist {
 		e := &edge{
-			src: src,
-			dst: dst,
-			property: make(map[string]int),
+			src:      src,
+			dst:      dst,
+			property: make(map[string]interface{}),
 		}
 		//v.outEdges = append(v.outEdges, e)
 		//v.inEdges = append(v.inEdges, e)
@@ -63,9 +63,9 @@ func (g *AdjList) AddEdge(src string, dst string) error {
 		v.inEdges[dst] = e
 		return nil
 	} else {
-		if (srcexist) {
+		if srcexist {
 			return fmt.Errorf("dst vertex %s doesnt exist", dst)
-		} else if (dstexist) {
+		} else if dstexist {
 			return fmt.Errorf("src vertex %s doesnt exist", src)
 		} else {
 			return fmt.Errorf("src %s and dst %s vertex doesnt exist", src, dst)
@@ -73,7 +73,7 @@ func (g *AdjList) AddEdge(src string, dst string) error {
 	}
 }
 
-func (g *AdjList) SetEdgeProperty(src string, dst string, name string, val int) error {
+func (g *AdjList) SetEdgeProperty(src string, dst string, name string, val interface{}) error {
 	v, srcexist := g.vertexmap[src]
 	_, dstexist := g.vertexmap[dst]
 	if srcexist && dstexist {
@@ -81,9 +81,9 @@ func (g *AdjList) SetEdgeProperty(src string, dst string, name string, val int) 
 		v.inEdges[dst].property[name] = val
 		return nil
 	} else {
-		if (srcexist) {
+		if srcexist {
 			return fmt.Errorf("dst vertex %s doesnt exist", dst)
-		} else if (dstexist) {
+		} else if dstexist {
 			return fmt.Errorf("src vertex %s doesnt exist", src)
 		} else {
 			return fmt.Errorf("src %s and dst %s vertex doesnt exist", src, dst)
@@ -91,38 +91,38 @@ func (g *AdjList) SetEdgeProperty(src string, dst string, name string, val int) 
 	}
 }
 
-func (g *AdjList) GetEdgeProperty(src string, dst string, name string) (int, error) {
+func (g *AdjList) GetEdgeProperty(src string, dst string, name string) (interface{}, error) {
 	v, vexist := g.vertexmap[src]
-	if vexist  {
+	if vexist {
 		e, exist := v.outEdges[dst]
 		if exist {
 			p, valid := e.property[name]
 			if valid {
 				return p, nil
 			} else {
-				return -1, fmt.Errorf("property %s doesnt exist", name)
+				return nil, fmt.Errorf("property %s doesnt exist", name)
 			}
 		} else {
-			return -1, fmt.Errorf("edge %s -> %s doesnt exist", src, dst)
+			return nil, fmt.Errorf("edge %s -> %s doesnt exist", src, dst)
 		}
 	} else {
-		return -1, fmt.Errorf("src vertex %s doesnt exist", src)
+		return nil, fmt.Errorf("src vertex %s doesnt exist", src)
 	}
 }
 
 func Keys(m map[string]*edge) []string {
-/*
-	v := reflect.ValueOf(m)
-	if v.Kind() != reflect.Map {
-		return nil
-	}
-	return v.MapKeys()
-*/
-    var keys []string
-    for k := range m {
+	/*
+	   v := reflect.ValueOf(m)
+	   if v.Kind() != reflect.Map {
+	           return nil
+	   }
+	   return v.MapKeys()
+	*/
+	var keys []string
+	for k := range m {
 		keys = append(keys, k)
 	}
-    return keys
+	return keys
 }
 
 func (g *AdjList) GetInEdges(name string) ([]string, error) {
